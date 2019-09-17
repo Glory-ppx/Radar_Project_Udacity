@@ -14,6 +14,11 @@ Frequency_of_operation = 77e9;
 MaxRange = 200;
 ```
 
+- Range Resolution: 1m
+```matlab
+RangeResolution = 1;
+```
+
 - Max Velocity: 100m/s
 
 ```matlab
@@ -29,6 +34,21 @@ VelResolution = 1;
 - Speed of light: 300 000 000 m/s
 
 ```matlab
-c = 3e8
+c = 3e8;
 ```
 
+ - Bandwidth
+ ```matlab
+Bandwidth = c/(2*VelResolution);
+ ```
+
+ - Chirp time
+ ```matlab
+ Tchirp = 5.5*2*MaxRange/c;
+ ```
+
+As an example we set the target's initial position and velocity as 100m and 50 m/s, respectively. More over, we assume that its velocity remains contant.
+```matlab
+target_initial_position = 100;
+target_velocity = 50;
+```
