@@ -26,4 +26,6 @@ MaxVelocity = 100;
 VelResolution = 1;
 '''
 
-**Speed of light**: $$3 \cdot 10^8$ m/s$$ 'c = 3e8'
+**Speed of light**: $$ 3 \cdot 10^8$ m/s $$ 
+
+'c = 3e8'
