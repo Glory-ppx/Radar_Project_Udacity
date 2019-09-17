@@ -4,28 +4,31 @@ Here's my solution to the "Radar Project" from the Udacity's Sensor Fusion Nanod
 In this project, we simulate a FMCW radar with the following specifications:
 - Frequency of operation: 77 GHz
 
-'''matlab
+```matlab
 Frequency_of_operation = 77e9;
-'''
+```
 
 - Max Range: 200m
 
-'''matlab
+```matlab
 MaxRange = 200;
-'''
+```
 
 - Max Velocity: 100m/s
 
-'''matlab
+```matlab
 MaxVelocity = 100;
-'''
+```
 
 - Velocity Resolution: 1m/s
 
-'''matlab
+```matlab
 VelResolution = 1;
-'''
+```
 
-**Speed of light**: $$ 3 \cdot 10^8$ m/s $$ 
+- Speed of light: 300 000 000 m/s
 
-'c = 3e8'
+```matlab
+c = 3e8
+```
+
