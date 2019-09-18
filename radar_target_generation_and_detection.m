@@ -3,6 +3,7 @@ clc
 %% Radar Specifications 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequency of operation = 77GHz
+Frequence_of_operation= 77e9;
 % Max Range = 200m
 MaxRange = 200;
 % Range Resolution = 1 m
@@ -11,18 +12,9 @@ RangeResolution = 1;
 MaxVelocity = 100;
 % Velocity Resolution = 1m/s
 VelResolution = 1;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %speed of light = 3e8
 c = 3e8;
-%% User Defined Range and Velocity of target
-% *%TODO* :
-% define the target's initial position and velocity. Note : Velocity
-% remains contant
-target_initial_position = 100;
-target_velocity = 50;
- 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% FMCW Waveform Generation
 
@@ -35,7 +27,7 @@ Tchirp = 5.5*2*MaxRange/c;
 Slope = Bandwidth/Tchirp;
 
 %Operating carrier frequency of Radar 
-Frequence_of_operation= 77e9;             %carrier freq
+             %carrier freq
 
                                                           
 %The number of chirps in one sequence. Its ideal to have 2^ value for the ease of running the FFT
@@ -47,19 +39,27 @@ N_range=1024;                  %for length of time OR # of range cells
 
 % Timestamp for running the displacement scenario for every sample on each
 % chirp
-time=linspace(0,N_doppler*Tchirp,N_range*N_doppler); %total time for samples
+time=linspace(0,N_doppler*Tchirp,N_range*N_doppler); %total amount of time samples
 
-
+%% User Defined Range and Velocity of target
+% *%TODO* :
+% define the target's initial position and velocity. Note : Velocity
+% remains contant
+target_initial_position = 100;
+target_velocity = 50;
+ 
+%% Generating the signals
+% *%TODO* :
 %Creating the vectors for Tx, Rx and Mix based on the total samples input.
-Transmited_signal=cos(2*pi*(Frequence_of_operation*time+Slope*time.^2/2)); %transmitted signal
+Transmitted_signal=cos(2*pi*(Frequence_of_operation*time+Slope*time.^2/2)); %transmitted signal
 Range_t = target_initial_position + target_velocity*time; %target position
 TimeDelay = 2*Range_t/c; % time delay
 Received_signal=cos(2*pi*(Frequence_of_operation*(time-TimeDelay)+Slope*(time-TimeDelay).^2/2)); %received signal
-Mixed_signal = Transmited_signal.*Received_signal; %beat/mixed signal
+Mixed_signal = Transmitted_signal.*Received_signal; %beat/mixed signal
+
 
 
 %% RANGE MEASUREMENT
-
 
  % *%TODO* :
 %reshape the vector into Nr*Nd array. Nr and Nd here would also define the size of
@@ -78,7 +78,7 @@ fft_beat_abs = abs(fft_beat);
  % *%TODO* :
 % Output of FFT is double sided signal, but we are interested in only one side of the spectrum.
 % Hence we throw out half of the samples.
-fft_beat_abs_first_half = fft_beat_abs(1:N_range/2);
+fft_beat_abs_first_half = fft_beat_abs(1:N_range/2,:);
 
 
 %plotting the range
@@ -106,7 +106,6 @@ axis ([0 200 0 1]);
 % doppler FFT bins. So, it is important to convert the axis from bin sizes
 % to range and doppler based on their Max values.
 
-Mixed_signal=reshape(Mixed_signal,[N_range,N_doppler]);
 
 % 2D FFT using the FFT size for both dimensions.
 sig_fft2 = fft2(Mixed_signal,N_range,N_doppler);
@@ -189,7 +188,6 @@ RadarDopplerMap(N_Training_cell_Range+N_Guard_cell_Range+1:end-(N_Training_cell_
 %display the CFAR output using the Surf function like we did for Range
 %Doppler Response output.
 figure,surf(doppler_axis,range_axis,RadarDopplerMap);
-colorbar;
 
 
  
